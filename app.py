@@ -14,7 +14,7 @@ app = Flask(__name__)
 if 'SECRET_KEY' not in os.environ:
     app.secret_key = os.urandom(24)
 os.environ['SECRET_KEY'] = base64.b64encode(app.secret_key).decode('utf-8')
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "REPLACE WITH YOUR OWN"
 
 @app.route('/load', methods=['GET', 'POST'])
 
