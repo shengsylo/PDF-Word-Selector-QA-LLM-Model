@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Word Selector QA LLM Model</title>
+</head>
+<body>
+    <div>
+        <h1> Welcome to PDF Word Selector QA Extension </h1>
+        <p> This extension is used to extract text from PDF and answer questions based on the text. </p>
+        <p> You can either upload a PDF file or paste text in the text area below. </p>
+        <p> Tips : Upload PDF / Paste Text > Click on PASTE > Click on Load > Enter Your Question > Click on Ask </p>
+    </div>
+    <input type="file" id="pdfUpload" accept=".pdf">
+    <input type="text" class="text" id="pasteText" placeholder="Paste your text here"> 
+    <div class="display" class="text" id="pastedTextDisplay"></div> 
+    <div>
+        <button id="loadButton">Load</button>
+        <button id="pasteButton">Paste</button>
+        <button id="clearButton">Clear</button>
+    </div>
+    <div id="loadResults" ></div>
+    <input type="text" id="question" placeholder="Ask your question...">
+    <button id="askButton">Ask</button>
+    <div class="display" id="answer"></div>
+
+    <script src="popup.js"></script>
+</body>
+<style>
+    body { font-family: sans-serif; }
+    #question { width: 400px; }
+    
+    .text ,#text{  
+        width: 400px; 
+        max-width: 400px;
+        height: 200px;
+        max-height: 200px;
+        word-wrap: break-word; 
+        resize: both; 
+        overflow-x: hidden; 
+        overflow-y: scroll; 
+        border: 1px dotted darkgrey; 
+        background-color: aliceblue;
+        padding: 5px;
+    }
+    .display{  
+        width: 400px; 
+        max-width: 400px;
+        height: 200px;
+        max-height: 200px;
+        word-wrap: break-word; 
+        resize: both; 
+        overflow-x: hidden; 
+        overflow-y: scroll; 
+        border: 1px dotted darkgrey; 
+        background-color: aliceblue;
+        padding: 5px;
+    }
+    
+</style>
+</html>
+
+

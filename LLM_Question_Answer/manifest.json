@@ -1,0 +1,21 @@
+{
+    "name": "My PDF Word Selector QA Extension",
+    "description": "Select text, ask questions, get answers from your AI",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "host_permissions": ["http://127.0.0.1:5000/*"],
+
+    "permissions": [ 
+        "activeTab",
+        "storage",
+        "background"  
+    ],
+        "action": {
+        "default_popup": "home.html",
+        "default_icon": "GoogleExtensionTesting.png"
+    },
+
+    "background": {
+        "service_worker": "background.js" 
+    }
+}
