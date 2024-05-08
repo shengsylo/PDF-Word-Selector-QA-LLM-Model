@@ -16,3 +16,10 @@
     <li>Run app.py</li>
 </ol>
 <p> After the Installation you may use the extension ~ </p>
+
+<oi>
+    <li>langchain_community > Version: 0.0.18</li>
+    <li>InstructorEmbedding > Version: 1.0.1</li>
+    <li>langchain > Version: 0.1.2</li>
+    <li>torch > Version: 2.2.2</li>
+</ol>
