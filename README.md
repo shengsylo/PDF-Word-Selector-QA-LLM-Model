@@ -1,36 +1,54 @@
-# PDF Word Selector QA LLM Model
- This extension is used to extract text from PDF and answer questions based on the text
-<h1>My PDF Word Selector QA Extension</h1> 
-<p>A powerful browser extension that enables you to extract text from PDFs and ask insightful questions, getting concise and relevant answers from the document's content.</p>
+# PDF Word Selector QA LLM Extension
 
-<h2>Key Features</h2>
-<ul>
-    <li>PDF & Text Support</li>
-    <li>Intuitive Question Answering</li>
-    <li>User-Friendly Interface</li>
-</ul>
-
-<h2>Installation</h2>
-<ol>
-    <li>Install the extension into Chrome by using Load Unpacked Package</li>
-    <li>Run app.py</li>
-</ol>
-<p> After the Installation you may use the extension ~ </p>
-
-<oi>
-    <li>langchain_community > Version: 0.0.18</li>
-    <li>InstructorEmbedding > Version: 1.0.1</li>
-    <li>langchain > Version: 0.1.2</li>
-    <li>torch > Version: 2.2.2</li>
-</ol>
-
-<h2>Flow</h2>
-<div>
-    <p>1. Allow User Input / Upload Document.</p>
-    <p>2. Preprocessing document/user input.</p>
-    <p>3. Embedding > <b>hkunlp/instructor-large by HongKongUniversity NLP<link rel="stylesheet" href="https://huggingface.co/hkunlp/instructor-large"></b></p>
-    <p>4. Vector Store > Facebook AI Similarity Search (Faiss) indexing <b><link rel="stylesheet" href="https://engineering.fb.com/2017/03/29/data-infrastructure/faiss-a-library-for-efficient-similarity-search/"></b></p>
-    <p>5. Question(query) received from user </p>
-    <p>6. LLM retrieve relevant passages > <b>tiiuae/falcon-7b-instruct <link rel="stylesheet" href="https://huggingface.co/tiiuae/falcon-7b-instruct"></b>, the LLM is trained pretrained by dataset <b><link rel="stylesheet" href="https://huggingface.co/datasets/tiiuae/falcon-refinedweb"></b>.</p>
-    <p>7. Generate result > RetrievalQA Chain (stuff chain) > <b><link rel="stylesheet" href="https://docs.smith.langchain.com/old/cookbook/hub-examples/retrieval-qa-chain"></b><img src="https://miro.medium.com/v2/resize:fit:1400/0*UmXjah3cpYNFxJYE.png"></p>
+<div align="center">
+<img src="https://github.com/your-github-username/your-repo-name/blob/main/screenshot.png](https://github.com/shengsylo/PDF-Word-Selector-QA-LLM-Model/blob/master/LLM_Question_Answer/logo.png" alt="Extension Screenshot" width="400"/>
 </div>
+
+A powerful browser extension that transforms how you interact with PDFs. Extract text effortlessly, ask insightful questions, and receive precise answers directly from the document's content.
+
+## ✨ Key Features
+
+* **PDF & Text Support:**  Seamlessly extract text from both PDFs and plain text documents.
+* **Intuitive Question Answering:**  Ask questions in natural language and get accurate, contextually relevant answers.
+* **User-Friendly Interface:**  A clean and intuitive design makes interacting with your PDFs a breeze.
+* **Advanced AI:** Powered by state-of-the-art Large Language Models (LLMs) for intelligent text processing.
+
+## 🚀 Installation
+
+1. **Download:** Clone this repository or download the extension as a ZIP file.
+2. **Chrome Extension:**
+   * Open Chrome and navigate to `chrome://extensions`.
+   * Enable "Developer mode" in the top right corner.
+   * Click "Load unpacked" and select the downloaded extension folder.
+3. **Run Server:**
+   * Open your terminal and navigate to the extension directory.
+   * Run `app.py` to start the server.
+
+## 🛠️ Technical Details
+
+* **Embedding Model:** `hkunlp/instructor-large` by Hong Kong University NLP
+* **Vector Store:** Facebook AI Similarity Search (Faiss) indexing
+* **LLM:** `tiiuae/falcon-7b-instruct` (pretrained on `tiiuae/falcon-refinedweb` dataset)
+* **RetrievalQA Chain:** Utilizes the "stuff chain" approach for efficient question answering.
+
+## 💡 How It Works
+
+1. **Input:** Upload your PDF or paste text directly.
+2. **Preprocessing:** The text is cleaned and prepared for analysis.
+3. **Embedding:** The text is converted into numerical representations for efficient comparison.
+4. **Vector Store:** Embeddings are indexed for quick similarity search.
+5. **Question:** Ask your question in plain language.
+6. **Retrieval:** Relevant passages are retrieved using the LLM.
+7. **Answer Generation:** The LLM generates a concise and accurate answer based on the retrieved passages.
+
+## 🎯 Keywords
+
+PDF, text extraction, question answering, LLM, natural language processing, information retrieval, document analysis, AI-powered extension, browser extension
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
