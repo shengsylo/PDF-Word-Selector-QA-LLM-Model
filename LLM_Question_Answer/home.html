@@ -1,56 +1,252 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PDF Word Selector QA LLM Model</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <title>PDF Word Selector QA</title>
 </head>
-<body>
-    <div>
-        <h1> Welcome to PDF Word Selector QA Extension </h1>
-        <p> This extension is used to extract text from PDF and answer questions based on the text. </p>
-        <p> You can either upload a PDF file or paste text in the text area below. </p>
-        <p> Tips : Upload PDF / Paste Text > Click on PASTE > Click on Load > Enter Your Question > Click on Ask </p>
+<body class="text-white p-5" style="background-color: #000;">
+    <div class="row g-0 pb-4 d-flex justify-content-evenly">
+        <div class="col-12">
+            <h1 class="woiiiishehhh m-0"> PDF Q&A Master </h1>
+        </div>
+        <div class="col-12 py-3 d-flex justify-content-center">
+            <small class="text-center"><em class="text-danger pe-2">*</em><span class="text-muted"> Tips : You can either upload a PDF or paste the article to ask a question. </span></small>
+        </div>
+        <button type="button" class="col-5 btn btn-outline-info" id="feature_click">Feature</button>
+        <button type="button" class="col-5 btn btn-outline-info" id="conversation_click">Conversation</button>
     </div>
-    <input type="file" id="pdfUpload" accept=".pdf">
-    <input type="text" class="text" id="pasteText" placeholder="Paste your text here"> 
-    <div class="display" class="text" id="pastedTextDisplay"></div> 
-    <div>
-        <button id="loadButton">Load</button>
-        <button id="pasteButton">Paste</button>
-        <button id="clearButton">Clear</button>
+
+    <div id="feature">
+        <div class="row g-0 py-3">
+            <div class="col-12">
+                <div class="form_box d-flex justify-content-center">
+                    <div class="button-box">
+                        <div id="btn-layout"></div>
+                        <button type="button" id="pdf_click" class="toggle-btn p-3"><small>Upload PDF</small></button>
+                        <button type="button" id="article_click" class="toggle-btn p-3"><small>Paste Article</small></button>
+                    </div>
+                </div>
+            </div>     
+        </div>
+        <div class="row g-0 py-3 h-100 d-flex justify-content-center">
+            <div class="col-9 d-flex align-items-center p-4" id="file_container">
+                <input type="file" id="pdfUpload" accept=".pdf" class="d-none">
+                <label for="pdfUpload" id="pdfUpload_label" class="btn-woiisheehhh m-0 w-100 text-center">Upload File</label>
+                <small id="upload_file" class="col-9 m-0 text-muted text-center" hidden></small>
+            </div>
+            <div class="col-9" id="iframe_container" hidden>
+                <iframe class="w-100 h-100" id="iframe" frameborder="0"></iframe>
+            </div>
+            <div class="col-9" id="text_container" hidden>
+                <textarea id="pasteText" rows="4" class="w-100 h-100" placeholder="Paste your text here" hidden></textarea>
+            </div>
+            <div class="col-3 d-flex flex-column p-2">
+                <button class="btn btn-outline-light btn-sm" id="loadButton">Load</button>
+                <button class="btn btn-outline-light btn-sm my-3" id="pasteButton">Paste</button>
+                <button class="btn btn-outline-light btn-sm" id="clearButton">Clear</button>
+            </div>
+        </div>
     </div>
-    <div id="loadResults" ></div>
-    <input type="text" id="question" placeholder="Ask your question...">
-    <button id="askButton">Ask</button>
-    <div class="display" id="answer"></div>
+    
+    <div id="conversation" class="bg-dark p-4" style="max-height: 350px; height: 350px; overflow: auto;" hidden>
+        <div class="row g-0 d-flex justify-content-start">
+            <div class="col-1 pe-2">
+                <img src="logo.png" alt="bot" class="border w-100 rounded-circle bg-light">
+            </div>
+            <div class="col-8">
+                <p class="text-start m-0"><strong>PDF Master</strong></p>
+                <p class="text-start m-0">Upload a PDF or paste a article before you ask.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group mb-3">
+        <input type="text" id="question" class="form-control" placeholder="Enter your question here..." aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button id="askButton" class="btn btn-outline-secondary d-flex align-items-center" type="button">
+            <span class="material-symbols-outlined">send</span>
+            Send
+        </button>
+    </div>
+
+    <div class="row g-0" id="result_container">
+        <div class="col-12">
+            <p class="m-0">Answer: </p>
+        </div>
+        <div class="col-12 p-4">
+            <div class="display text text-dark d-none" id="pastedTextDisplay" hidden></div> 
+            <div id="loadResults" class="text-dark d-none" hidden></div>
+            <div class="display text-dark" id="answer"></div>
+        </div>
+    </div>
 
     <script src="popup.js"></script>
 </body>
 <style>
-    body { font-family: sans-serif; }
-    #question { width: 400px; }
-    
+    #conversation, #feature {
+        opacity: 1;  /* Initial visibility (optional) */
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    #conversation.hidden, #feature.hidden {
+        opacity: 0; /* Hide div with animation */
+        display: none;
+    }
+
+    body { 
+        font-family: sans-serif; 
+        min-width: 600px;
+        min-height: 650px;
+    }
+    /* button effect here */
+    .btn-woiisheehhh {
+        margin: 100px;
+        padding: 15px 40px;
+        border: none;
+        outline: none;
+        color: #FFF;
+        cursor: pointer;
+        position: relative;
+        z-index: 0;
+        border-radius: 12px;
+    }
+    .btn-woiisheehhh::after {
+        content: "";
+        z-index: -1;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        left: 0;
+        top: 0;
+        border-radius: 10px;
+    }
+    /* glow */
+    .btn-woiisheehhh::before {
+        content: "";
+        background: linear-gradient(
+            45deg,
+            #FF0000, #FF7300, #FFFB00, #48FF00,
+            #00FFD5, #002BFF, #FF00C8, #FF0000
+        );
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        background-size: 600%;
+        z-index: -1;
+        width: calc(100% + 4px);
+        height:  calc(100% + 4px);
+        filter: blur(8px);
+        animation: glowing 20s linear infinite;
+        transition: opacity .3s ease-in-out;
+        border-radius: 10px;
+        opacity: 0;
+    }
+
+    @keyframes glowing {
+        0% {background-position: 0 0;}
+        50% {background-position: 400% 0;}
+        100% {background-position: 0 0;}
+    }
+
+        /* hover */
+
+    .btn-woiisheehhh:hover{
+        color: white;
+    }
+    .btn-woiisheehhh:hover::before {
+        opacity: 1;
+    }
+
+    .btn-woiisheehhh:active:after {
+        background: transparent;
+    }
+
+    .btn-woiisheehhh:active {
+        color: #000;
+        font-weight: bold;
+    }
+
+    /* text effect here */
+    .woiiiishehhh{
+        position: relative;
+        font-size: 3em;
+        letter-spacing: 12px;
+        color: #0e3742;
+        text-transform: uppercase;
+        width: 100%;
+        text-align: center;
+        -webkit-box-reflect: below 1px liner-gradient(transparent, #0008);
+        line-height: 1em;
+        outline: none;
+        animation: animate 5s linear infinite;
+    }
+
+    @keyframes animate {
+        0%, 18%, 20%, 50.1%, 60%, 65.1%, 80%, 90.1%, 92%{
+            color: #0e3742;
+            text-shadow: none;
+        }
+        18.1%, 20.1%, 30%, 50%, 60.1%, 65%, 80.1%, 90%, 92.1%, 100%{
+            color: #fff;
+            text-shadow: 0 0 10px #03bcf4,
+            0 0 20px #03bcf4,
+            0 0 40px #03bcf4,
+            0 0 80px #03bcf4,
+            0 0 160px #03bcf4;
+        }
+    }
+
+    /* button box efffect */
+    .button-box{
+        width: 300px;
+        /* margin: 35px auto; */
+        position: relative;
+        border-radius: 30px;
+        background-color: #fff;
+    }
+
+    .toggle-btn {
+        width: 150px;
+        display: inline-block;
+        float: left;
+        /* padding: 10px 40px; */
+        cursor: pointer;
+        background: transparent;
+        border: 0;
+        outline: none;
+        position: relative;
+        text-align: center;
+    }
+
+    #btn-layout{
+        left: 0;
+        top: 0;
+        position: absolute;
+        width: 150px;
+        height: 100%;
+        background-color: #2880ff;
+        border-radius: 30px;
+        transition: .5s;
+    }
+
+
     .text ,#text{  
-        width: 400px; 
-        max-width: 400px;
-        height: 200px;
-        max-height: 200px;
+        height: 100px;
+        max-height: 100px;
         word-wrap: break-word; 
         resize: both; 
-        overflow-x: hidden; 
-        overflow-y: scroll; 
+        overflow: auto;
         border: 1px dotted darkgrey; 
         background-color: aliceblue;
         padding: 5px;
     }
     .display{  
-        width: 400px; 
-        max-width: 400px;
-        height: 200px;
-        max-height: 200px;
+        height: 100px;
+        max-height: 100px;
         word-wrap: break-word; 
         resize: both; 
-        overflow-x: hidden; 
-        overflow-y: scroll; 
+        overflow: auto;
         border: 1px dotted darkgrey; 
         background-color: aliceblue;
         padding: 5px;
@@ -58,5 +254,3 @@
     
 </style>
 </html>
-
-

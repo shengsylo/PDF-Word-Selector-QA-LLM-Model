@@ -12,10 +12,12 @@
     ],
         "action": {
         "default_popup": "home.html",
-        "default_icon": "GoogleExtensionTesting.png"
+        "default_icon": "logo.png"
     },
 
     "background": {
         "service_worker": "background.js" 
     }
+
+    
 }

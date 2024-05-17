@@ -8,6 +8,7 @@ import os
 from PyPDF2 import PdfReader
 from flask import Flask, request, jsonify, session 
 import base64
+from langchain.prompts import PromptTemplate
 import io
 
 app = Flask(__name__)
@@ -77,13 +78,32 @@ def get_vectorstore(text_chunks):
 
 def retrieval_qa_chain(db, return_source_documents):
     model_name = session.get('model_name')
+
     if model_name:
-        embeddings = HuggingFaceInstructEmbeddings(model_name=model_name) 
-        llm = HuggingFaceHub(repo_id="tiiuae/falcon-7b-instruct", model_kwargs={"temperature":0.6,"max_length":500, "max_new_tokens":700})
-        qa_chain = RetrievalQA.from_chain_type(llm=llm, chain_type='stuff', retriever=db, return_source_documents=return_source_documents)
+        embeddings = HuggingFaceInstructEmbeddings(model_name=model_name)
+        llm = HuggingFaceHub(repo_id="tiiuae/falcon-7b-instruct", model_kwargs={"temperature": 0.6, "max_length": 500, "max_new_tokens": 500})# Define a PromptTemplate
+        template = """Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+        
+        Context:
+        {context}
+
+        Question: {question}
+        Answer:"""
+
+        qa_prompt = PromptTemplate(
+            template=template, input_variables=["context", "question"]
+        )
+
+        qa_chain = RetrievalQA.from_chain_type(
+            llm=llm,
+            chain_type="stuff",
+            retriever=db,
+            return_source_documents=return_source_documents,
+            chain_type_kwargs={"prompt": qa_prompt},  # Pass the prompt
+        )
         return qa_chain
     else:
-        return None 
+        return None
 
 @app.route('/query', methods=['POST']) 
 
@@ -99,9 +119,15 @@ def query():
         question = request.get_data().decode('utf-8') 
         rtn = process_question(question,chain)
 
-        answer = rtn['result']  
-        source_documents = [doc.page_content for doc in rtn.get('source_documents', [])]  
+        full_answer = rtn['result'] 
+        print("full_answer",full_answer)
+        
+        answer_start = full_answer.find("Answer:") + len("Answer:")
+        answer = full_answer[answer_start:].strip()  # Strip any extra whitespace        
+        answer = answer.replace("{", "").replace("}", "")
+        print("answer:", answer)
 
+        source_documents = [doc.page_content for doc in rtn.get('source_documents', [])]  
         return_data = {'answer': answer, 'source_documents': source_documents}
         return jsonify(rtn=return_data)
     else:
